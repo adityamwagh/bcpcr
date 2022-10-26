@@ -79,7 +79,10 @@ class PairDataset(torch.utils.data.Dataset):
 
 class KITTIPairDataset(PairDataset):
     AUGMENT = None
-    DATA_FILES = {"train": "config/train_kitti.txt", "val": "config/val_kitti.txt", "test": "config/test_kitti.txt"}
+    DATA_FILES = {
+        "train": "config/train_kitti.txt", 
+        "val": "config/val_kitti.txt", 
+        "test": "config/test_kitti.txt"}
 
     TEST_RANDOM_ROTATION = True
     IS_ODOMETRY = True
