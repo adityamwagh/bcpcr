@@ -7,15 +7,17 @@ from torch.utils.data import DataLoader
 import utils
 from KITTI import KITTINMPairDataset
 
-# parser = argparse.ArgumentParser()
-# parser.add_argument("")
+parser = argparse.ArgumentParser()
+parser.add_argument("--eps", type=float, default=1.0, help="Tells the distance threshold = 10 + eps to compute overlapping points")
+args = parser.parse_args()
 
-# get ppair of point clouds from the dataset
+
+# get pair of point clouds from the dataset
 dataset = KITTINMPairDataset(phase="train")
 loader = DataLoader(dataset, batch_size=1, shuffle=False, drop_last=True)
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
-eps = 10  # threshold for distances
+eps = 10.0 + args.eps  # threshold for distances
 
 N = len(loader)
 pc_pair, _ = dataset.__getitem__(0)
@@ -37,7 +39,7 @@ for idx, (pc_pair, gt_pose) in enumerate(loader):
     pc_pair = pc_pair.to(device).float()
     R, t = utils.get_rot_trans(gt_pose)
     R, t = R.to(device).float(), t.to(device).float()
-
+    
     # get source and target point clouds from data
     src = pc_pair[0, 0, :, :]
     tgt = pc_pair[0, 1, :, :]
@@ -51,14 +53,14 @@ for idx, (pc_pair, gt_pose) in enumerate(loader):
 
         for j, tgt_pt in enumerate(tgt):
             distances[i][j] = torch.dist(src_pt, tgt_pt, 2)
-            # all_inliers[idx][i][j] = torch.lt(distances[i][j], eps)exi
-            all_inliers[idx][i][j] = distances[i][j]
+            all_inliers[idx][i][j] = torch.lt(distances[i][j], eps)
 
 # convert pytorch tensors to numpy
 all_inliers = all_inliers.numpy()  # <N x n_pts x n_pts x 3>
 test = distances.cpu().numpy()
-print(test.shape)
-print(test)
+all_inliers = np.argwhere(all_inliers == True)
 
+print(all_inliers)
+print(len(all_inliers))
 # save dataset
-np.save("inliers.npy", test)
+np.save(f"overlapping_pts_{args.eps}.npy", all_inliers)

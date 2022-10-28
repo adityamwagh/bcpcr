@@ -86,7 +86,7 @@ class KITTIPairDataset(PairDataset):
 
     TEST_RANDOM_ROTATION = True
     IS_ODOMETRY = True
-    LOCAL = True
+    LOCAL = False
 
     def __init__(self, phase="train", transform=None, random_rotation=True, random_scale=False, manual_seed=False, config=None):
 
@@ -339,7 +339,7 @@ class KITTIPairDataset(PairDataset):
 class KITTINMPairDataset(KITTIPairDataset):
 
     MIN_DIST = 10 # min distance
-    LOCAL = True
+    LOCAL = False
 
     def __init__(self, phase, transform=None, random_rotation=True, random_scale=True, manual_seed=False, config=None):
 
@@ -412,5 +412,3 @@ pc_pair, pose = dataset.__getitem__(3)
 
 # o3d.io.write_point_cloud("kitti_frame1.pcd", src_pc)
 # o3d.io.write_point_cloud("kitti_frame2.pcd", tgt_pc)
-# *|CURSOR_MARCADOR|*
-print(repr(pose))
