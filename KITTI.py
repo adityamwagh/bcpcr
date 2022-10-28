@@ -294,14 +294,14 @@ class KITTIPairDataset(PairDataset):
         pcd0 = voxel_downsample(xyz0, self.voxel_size)
         pcd1 = voxel_downsample(xyz1, self.voxel_size)
 
-        # pcd0 = pcd0[:4415, :]
-        # pcd1 = pcd1[:4415, :]
+        pcd0 = pcd0[:4415, :]
+        pcd1 = pcd1[:4415, :]
 
         # pcd0 = pcd0[::2, :]
         # pcd1 = pcd1[::2, :]
 
-        pcd0 = pcd0[:100, :]
-        pcd1 = pcd1[:100, :]
+        # pcd0 = pcd0[:100, :]
+        # pcd1 = pcd1[:100, :]
 
         # sample_idx = np.random.choice(self.N, 2048, replace=False)
 
@@ -399,16 +399,5 @@ class KITTINMPairDataset(KITTIPairDataset):
         # self.files = self.files[0:100]
 
 
-dataset = KITTINMPairDataset("train")
-pc_pair, pose = dataset.__getitem__(3)
-
-# src = pc_pair[0].detach().numpy()
-# tgt = pc_pair[1].detach().numpy()
-
-# src_pc = o3d.geometry.PointCloud()
-# tgt_pc = o3d.geometry.PointCloud()
-# src_pc.points = o3d.utility.Vector3dVector(src)
-# tgt_pc.points = o3d.utility.Vector3dVector(tgt)
-
-# o3d.io.write_point_cloud("kitti_frame1.pcd", src_pc)
-# o3d.io.write_point_cloud("kitti_frame2.pcd", tgt_pc)
+# dataset = KITTINMPairDataset("train")
+# pc_pair, pose = dataset.__getitem__(3)
