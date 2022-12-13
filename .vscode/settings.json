@@ -1,0 +1,7 @@
+{
+    "python.formatting.provider": "black",
+    "docwriter.style": "NumPy",
+    "python.analysis.autoImportCompletions": true,
+    "python.linting.enabled": true,
+    "python.analysis.typeCheckingMode": "basic",
+}
